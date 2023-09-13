@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="app">
+        {{todo.description}}
+        {{todo.body}}
+        <form @submit.prevent="create_todo">
+            <input type="text" v-model="todo.description" placeholder="description" class="block" />
+            <input type="text" v-model="todo.body" placeholder="body" class="block" />
+            <input title="Will create todo" type="submit" value="Send" />
+        </form>
+        <div>
+            <ul>
+                <li v-for="(todo,idx) in todos" :key="idx">{{todo.body}} {{todo.description}}</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        createApp({
+            data() {
+                return {
+                    todo: {
+                        description: '',
+                        body: '',
+                    },
+                    message: 'Vue!',
+                    todos: [
+                        { id: 1, description: '1234', body: 1234, done: false },
+                        { id: 2, description: 'asf', body: 1234, done: false },
+                    ],
+                }
+            }
+        }).mount('#app')
+    </script>
+    
+</body>
+</html>
