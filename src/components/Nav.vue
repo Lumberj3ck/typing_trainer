@@ -27,5 +27,5 @@
     margin: 0 auto;
     font-size: 18px;
 }
-@import '../assets/base.css'
+@import '../assets/base.css';
 </style>

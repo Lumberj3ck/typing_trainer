@@ -1,13 +1,7 @@
 <script>
-import { computed } from 'vue'
-import Nav from './components/Nav.vue'
-import Footer from './components/Footer.vue'
 import { modifierKeys } from './config'
 
 export default {
-  components: {
-    Nav, Footer
-  },
   data() {
     return {
       selected: true,
@@ -19,41 +13,11 @@ export default {
   },
   mounted() {
     const input_value =
-      'Lorem ipsum %^^|\dolor sit, amet consectetur adipisicing elit. Officiis quis mollitia dolore. Facilis vitae mollitia molestiae reiciendis'
+      'Lorem ipsum %^^|dolor sit, amet consectetur adipisicing elit. Officiis quis mollitia dolore. Facilis vitae mollitia molestiae reiciendis'
     for (let i = 0; i < input_value.length; i++) {
       this.input_text.push({ letter: input_value[i], state: 'default' })
     }
     document.addEventListener('keydown', this.checkTypedKey)
-  },
-  watch: {
-    required_letter_index(newIndex, previousIndex) {
-      if (this.required_letter_index + 1 == this.input_text.length) {
-        this.next_level = true
-      } else {
-        this.next_level = false
-      }
-      // move cursor if deleted letter or new letter
-      this.input_text[previousIndex].current = false
-      // set new index of cursor
-      this.input_text[newIndex].current = true
-    }
-  },
-  computed: {
-    current_required_key() {
-      return this.input_text[this.required_letter_index]
-    },
-    accuracy() {
-      if (this.required_letter_index === 0){
-        return 100
-      }
-      return Math.round(
-        (this.input_text
-          .slice(0, this.required_letter_index)
-          .filter((response) => response.state === 'correct').length /
-          this.required_letter_index) *
-        100
-      )
-    }
   },
   methods: {
     deleteTypedKey() {
@@ -94,98 +58,10 @@ export default {
 </script>
 //spotahome gisma221 // uniplaces gisma1020
 <template>
-  <Nav></Nav>
-  <div class="content_section">
-    <div class="black text-base" v-if="isCaps">CapsLock turned on!</div>
-    <span
-      class="letter"
-      v-for="letter in input_text"
-      :class="{
-        correct: letter.state == 'correct',
-        incorrect: letter.state == 'incorrect',
-        default: letter.state == 'default',
-        current: letter.current
-      }"
-    >
-      {{ letter.letter }}
-    </span>
-    <div class="flex">
-    <div class="black text-base"> Accuracy: {{ accuracy }} %</div>
-    <a href="#" class="black text-base" v-if="next_level">Next level</a>
-    </div>
-  </div>
+    <router-link to="/about" class="black">About page</router-link>
+    <router-view class="black"></router-view>
 </template>
 
 <style scoped>
-.flex{
-  display: flex;
-  gap: 10px;
-}
-.text-base{
-  font-size: 18px;
-}
-.content_section {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  position: absolute;
-  top: 30%;
-  left: 20%;
-}
-.current {
-  border-bottom: 1px solid var(--correct-letter);
-}
-.m-2 {
-  margin: 10px;
-}
-.default {
-  color: #666;
-}
-.incorrect {
-  color: darkred;
-  background-color: pink;
-}
-.correct {
-  color: var(--correct-letter);
-  background: #d3e6fb;
-}
-.letter {
-  font-size: 35px;
-  font-weight: 400;
-  white-space: pre-wrap;
-  /* outline: 1px solid white; */
-}
-.black {
-  color: black;
-}
-.poster {
-  width: 50%;
-}
-.border-4 {
-  border: 1px solid teal;
-}
-.block {
-  margin-bottom: 10px;
-  display: block;
-}
-.line {
-  text-decoration: line-through;
-}
-.mb {
-  margin-bottom: 10px;
-}
-.row {
-  display: flex;
-  gap: 10px;
-  font-size: 20px;
-}
-.error {
-  color: red;
-}
-.success {
-  color: green;
-}
-.todo {
-  color: black;
-}
 @import './assets/base.css';
 </style>
