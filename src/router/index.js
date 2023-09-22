@@ -1,17 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Nav from '../components/Nav.vue'
-import Footer from '../components/Footer.vue'
+import MainPage from '../components/MainPage.vue'
+import Typer from '../components/Typer.vue'
 
 const routes = [
     {
         path: '/', 
         name: 'Home', 
-        component: Nav, 
+        component: MainPage, 
     },
     {
-        path: '/about', 
-        name: 'About', 
-        component: Footer, 
+        path: '/level/:id/', 
+        name: 'Level', 
+        component: Typer, 
     },
 ]
 

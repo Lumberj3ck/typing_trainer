@@ -1,6 +1,9 @@
 <template>
   <div class="content_section">
     <div class="black text-base" v-if="isCaps">CapsLock turned on!</div>
+    <div class="black text-base" >{{$route.params.id}} Level</div>
+    <div class="black text-base" >Difficulty {{ level_info.difficulty }}</div>
+    <div class="black text-base" >Created at {{ level_info.created_at }}</div>
     <span
       class="letter"
       v-for="(letter, idx) in input_text"
@@ -15,15 +18,14 @@
       {{ letter.letter }}
     </span>
     <div class="flex">
-      <div class="black text-base">Accuracy: {{ accuracy }} %</div>
-      <a href="#" class="black text-base" v-if="next_level">Next level</a>
+      <div class="black text-base"> Accuracy: {{ accuracy }} %</div>
+      <router-link :to="'/level/' + next_level.id + '/'" class="black text-base" v-if="has_next_level">Next Level</router-link>
     </div>
   </div>
-  <router-link to="/about" class="black">About page</router-link>
-  <router-view class="black"></router-view>
 </template>
 <script>
-import { modifierKeys } from './config'
+import { get_level, get_next_level }  from '../fetch_logic'
+import { modifierKeys } from '../config'
 
 export default {
   data() {
@@ -31,25 +33,24 @@ export default {
       selected: true,
       input_text: [],
       required_letter_index: 0,
+      has_next_level: false,
       next_level: false,
+      level_info: [],
       isCaps: true,
     }
   },
-  mounted() {
-    const input_value =
-      'Lorem ipsum %^^|dolor sit, amet consectetur adipisicing elit. Officiis quis mollitia dolore. Facilis vitae mollitia molestiae reiciendis'
+  async mounted() {
+    document.addEventListener('keydown', this.checkTypedKey)
+    let resp = await get_level(this.$route.params.id)
+    this.next_level_handler()
+    let input_value = resp.training_text
+    this.level_info = resp
     for (let i = 0; i < input_value.length; i++) {
       this.input_text.push({ letter: input_value[i], state: 'default' })
     }
-    document.addEventListener('keydown', this.checkTypedKey)
   },
   watch: {
     required_letter_index(newIndex, previousIndex) {
-      if (this.required_letter_index + 1 == this.input_text.length) {
-        this.next_level = true
-      } else {
-        this.next_level = false
-      }
       // move cursor if deleted letter or new letter
       this.input_text[previousIndex].current = false
       // set new index of cursor
@@ -61,7 +62,7 @@ export default {
       return this.input_text[this.required_letter_index]
     },
     accuracy() {
-      if (this.required_letter_index === 0){
+      if (this.required_letter_index === 0) {
         return 100
       }
       return Math.round(
@@ -69,11 +70,19 @@ export default {
           .slice(0, this.required_letter_index)
           .filter((response) => response.state === 'correct').length /
           this.required_letter_index) *
-        100
+          100
       )
     }
   },
   methods: {
+    async next_level_handler(){
+      let resp = await get_next_level(this.$route.params.id)
+      if (resp['next'] == undefined){
+        this.next_level = resp 
+        return
+      }
+      this.next_level = false
+    }, 
     deleteTypedKey() {
       if (this.required_letter_index > 0) {
         if (this.input_text.at(-1).state !== 'default') {
@@ -84,7 +93,7 @@ export default {
         this.required_letter_index -= 1
       }
     },
-    checkCapsLockTurnedOn(event){
+    checkCapsLockTurnedOn(event) {
       this.isCaps = event.getModifierState('CapsLock')
     },
     checkTypedKey(event) {
@@ -95,7 +104,7 @@ export default {
         // delete typed key
         this.deleteTypedKey()
       } else {
-        if (event.key == 'Space') {
+        if (event.keyCode == 32) {
           event.preventDefault()
         }
         var is_right = this.current_required_key.letter == event.key
@@ -103,6 +112,10 @@ export default {
           this.current_required_key.state = is_right ? 'correct' : 'incorrect'
           if (this.input_text.length > this.required_letter_index + 1) {
             this.required_letter_index += 1
+            this.has_next_level = false 
+          }
+          else if (this.input_text.length ==  this.required_letter_index + 1 && this.next_level ) {
+            this.has_next_level = true
           }
         }
       }
@@ -111,11 +124,11 @@ export default {
 }
 </script>
 <style scoped>
-.flex{
+.flex {
   display: flex;
   gap: 10px;
 }
-.text-base{
+.text-base {
   font-size: 18px;
 }
 .content_section {

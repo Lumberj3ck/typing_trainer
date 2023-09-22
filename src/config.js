@@ -1,5 +1,6 @@
 const API_KEY = 'BIiL8qFTiXmxfR2TpFBStPhEFKv58xVZR6o0mOkJ'
 
+const site_url = 'http://localhost:8000'
 
 const modifierKeys = [
   'Shift',
@@ -24,4 +25,4 @@ const modifierKeys = [
 ];
 
 
-export {modifierKeys};
+export {modifierKeys, site_url};

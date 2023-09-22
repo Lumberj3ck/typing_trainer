@@ -1,10 +1,14 @@
 <template>
-  <footer class="bg-black footer">
+  <footer class="bg-black footer w-full">
+    {{ $route.params.id }}
     <div class="white">Footer</div>
   </footer>
 </template>
 
 <style>
+.w-full{
+  width: 100%;
+}
 .white {
   color: white;
 }
