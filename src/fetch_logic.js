@@ -21,6 +21,17 @@ async function get_levels_list() {
   })
   return response.json()
 }
+async function get_levels_list_by_lang(lang_id) {
+  const url = `${site_url}/api/v1/levels/?language=${lang_id}`
+  console.log(url)
+  let response = await fetch(url, {
+    method: 'GET',
+    headers: { 
+    'Content-Type': 'application/json' 
+    }
+  })
+  return response.json()
+}
 
 async function get_next_level(lvl_id) {
   const url = `${site_url}/api/v1/levels/next/${lvl_id}/`
@@ -33,4 +44,4 @@ async function get_next_level(lvl_id) {
   return response.json()
 }
 
-export { get_level, get_levels_list, get_next_level}
+export { get_level, get_levels_list, get_next_level, get_levels_list_by_lang}
