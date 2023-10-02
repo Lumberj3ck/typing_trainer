@@ -16,7 +16,7 @@ export default {
 </script>
 //spotahome gisma221 // uniplaces gisma1020
 <template>
-  <router-view class="black" ref="typer"></router-view>
+  <router-view ref="typer"></router-view>
 </template>
 
 <style scoped>

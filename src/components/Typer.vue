@@ -39,6 +39,7 @@ export default {
     return {
       selected: true,
       input_text: [],
+      lang_code: null,
       required_letter_index: 0,
       has_next_level: false,
       next_level: false,
@@ -92,6 +93,7 @@ export default {
     async set_level_data() {
       document.addEventListener('keydown', this.checkTypedKey)
       let resp = await get_level(this.$route.params.id)
+      this.lang_code = resp.language 
       this.next_level_handler()
       let input_value = resp.training_text
       this.level_info = resp
@@ -100,7 +102,7 @@ export default {
       }
     },
     async next_level_handler() {
-      let resp = await get_next_level(this.$route.params.id)
+      let resp = await get_next_level(this.$route.params.id, this.lang_code)
       if (resp['next'] == undefined) {
         this.next_level = resp
         return
