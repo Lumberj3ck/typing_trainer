@@ -1,8 +1,8 @@
 <template>
-  <div style="background-color: black">
-    <div v-for="level_item in levels_list" :key="level_item.id">
-      <router-link :to="'/level/' + level_item.id">Level {{ level_item.name }} {{ level_item.language }}</router-link>
-    </div>
+  <div style="color: gray; font-size: 17px; margin-left: 40px; margin-top: 40px;">
+    <router-link :to="'/level/' + level_item.id" v-for="level_item in levels_list" :key="level_item.id" style="display: block; border: 1px solid black; width: max-content; padding: 7px; border-radius: 10px; min-width: 240px; margin-bottom: 10px;">
+      Level {{ level_item.name }} {{ level_item.language }}
+    </router-link>
   </div>
 </template>
 
