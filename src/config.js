@@ -1,7 +1,7 @@
 const API_KEY = 'BIiL8qFTiXmxfR2TpFBStPhEFKv58xVZR6o0mOkJ'
 
 // const site_url = 'http://localhost:8000'
-const site_url = 'http://165.227.196.201/'
+const site_url = 'http://165.227.196.201'
 
 const modifierKeys = [
   'Shift',
